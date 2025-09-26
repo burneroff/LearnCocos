@@ -95,7 +95,7 @@ export class GameMenager extends Component {
     console.log("Field generated");
   }
 
-  spawnBlocks() {
+  spawnField() {
     if (!this.curPrefab) {
       console.warn("Prefab is not assigned!");
       return;
@@ -112,15 +112,8 @@ export class GameMenager extends Component {
 
         // Задаём цвет спрайта
         let sprite = block.getComponentInChildren(Sprite);
-
         if (sprite) {
           sprite.color = Color.fromHEX(new Color(), this._field[i][j].color);
-        }
-
-        // Выключаем Label по умолчанию
-        let label = block.getComponentInChildren(Label);
-        if (label) {
-          label.enabled = false;
         }
       }
     }
@@ -166,7 +159,7 @@ export class GameMenager extends Component {
     this._field = [];
 
     this.generateField();
-    this.spawnBlocks();
+    this.spawnField();
     this.findClusters();
   }
 
