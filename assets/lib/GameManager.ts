@@ -30,17 +30,6 @@ export class GameManager extends Component {
   @property([Prefab])
   prefabs: Prefab[] = [];
 
-  @property(EditBox)
-  inputM: EditBox = null!;
-
-  @property(EditBox)
-  inputN: EditBox = null!;
-
-  @property(EditBox)
-  inputX: EditBox = null!;
-
-  @property(EditBox)
-  inputY: EditBox = null!;
   // DFS обход
   private dfs(i: number, j: number, prefab: Prefab, cluster: Field[]) {
     if (
@@ -67,6 +56,22 @@ export class GameManager extends Component {
   private fieldLengthN = 5; // длина (столбцы)
   private fieldColorsX = 3; // количество цветов
   private fieldMinClusterSizeY = 3; // минимальный размер кластера
+
+  public setM(value: number) {
+    this.fieldWidthM = value;
+  }
+
+  public setN(value: number) {
+    this.fieldLengthN = value;
+  }
+
+  public setX(value: number) {
+    this.fieldColorsX = value;
+  }
+
+  public setY(value: number) {
+    this.fieldMinClusterSizeY = value;
+  }
 
   private _field: Field[][] = [];
   private _visited: boolean[][] = [];
@@ -97,7 +102,13 @@ export class GameManager extends Component {
         break;
       default:
         this.generateField();
+        this.spawnField();
     }
+  }
+
+  start(){
+    this.curState = GameState.GS_INIT;
+    
   }
 
   generateField() {
@@ -184,15 +195,8 @@ export class GameManager extends Component {
     }
   }
 
-  onInputChange() {
-    this.fieldWidthM = parseInt(this.inputM.string) || this.fieldWidthM;
-    this.fieldLengthN = parseInt(this.inputN.string) || this.fieldLengthN;
-    this.fieldColorsX = parseInt(this.inputX.string) || this.fieldColorsX;
-    this.fieldMinClusterSizeY =
-      parseInt(this.inputY.string) || this.fieldMinClusterSizeY;
-  }
-
-  onStartButtonClicked() {
+  gameStart() {
+    this.curState = GameState.GS_PLAYING;
     this.node.removeAllChildren();
     this._field = [];
 
