@@ -1,0 +1,41 @@
+
+sym_9.png
+size: 293,293
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_9
+  rotate: false
+  xy: 3, 122
+  size: 116, 168
+  orig: 120, 172
+  offset: 2, 2
+  index: -1
+s_9_01
+  rotate: true
+  xy: 174, 21
+  size: 114, 64
+  orig: 118, 74
+  offset: 2, 8
+  index: -1
+s_9_03
+  rotate: false
+  xy: 122, 210
+  size: 114, 80
+  orig: 118, 94
+  offset: 2, 7
+  index: -1
+s_9_05
+  rotate: false
+  xy: 122, 138
+  size: 113, 69
+  orig: 117, 79
+  offset: 2, 2
+  index: -1
+sym_9
+  rotate: true
+  xy: 3, 3
+  size: 116, 168
+  orig: 120, 172
+  offset: 2, 2
+  index: -1

@@ -1,0 +1,41 @@
+
+sym_a.png
+size: 597,597
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_a
+  rotate: false
+  xy: 3, 426
+  size: 175, 168
+  orig: 179, 172
+  offset: 2, 2
+  index: -1
+s_a_01
+  rotate: false
+  xy: 359, 440
+  size: 137, 65
+  orig: 143, 71
+  offset: 2, 4
+  index: -1
+s_a_02
+  rotate: false
+  xy: 359, 508
+  size: 153, 86
+  orig: 160, 106
+  offset: 2, 12
+  index: -1
+s_a_03
+  rotate: true
+  xy: 515, 439
+  size: 155, 79
+  orig: 159, 88
+  offset: 2, 2
+  index: -1
+sym_a
+  rotate: false
+  xy: 181, 426
+  size: 175, 168
+  orig: 179, 172
+  offset: 2, 2
+  index: -1

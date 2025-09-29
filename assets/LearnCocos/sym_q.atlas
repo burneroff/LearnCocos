@@ -1,0 +1,41 @@
+
+sym_q.png
+size: 604,604
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_q
+  rotate: false
+  xy: 3, 424
+  size: 172, 177
+  orig: 176, 181
+  offset: 2, 2
+  index: -1
+s_q_01
+  rotate: false
+  xy: 3, 3
+  size: 142, 68
+  orig: 149, 83
+  offset: 3, 13
+  index: -1
+s_q_02
+  rotate: true
+  xy: 86, 94
+  size: 147, 83
+  orig: 151, 101
+  offset: 2, 9
+  index: -1
+s_q_03
+  rotate: true
+  xy: 3, 74
+  size: 167, 80
+  orig: 173, 94
+  offset: 3, 2
+  index: -1
+sym_q
+  rotate: false
+  xy: 3, 244
+  size: 172, 177
+  orig: 176, 181
+  offset: 2, 2
+  index: -1

@@ -1,0 +1,62 @@
+
+cherry.png
+size: 533,533
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ch_01
+  rotate: true
+  xy: 401, 166
+  size: 172, 114
+  orig: 177, 119
+  offset: 2, 3
+  index: -1
+ch_02
+  rotate: false
+  xy: 209, 186
+  size: 189, 152
+  orig: 193, 171
+  offset: 2, 7
+  index: -1
+ch_03
+  rotate: false
+  xy: 347, 62
+  size: 183, 101
+  orig: 187, 108
+  offset: 2, 2
+  index: -1
+cherry
+  rotate: true
+  xy: 209, 341
+  size: 189, 218
+  orig: 193, 222
+  offset: 2, 2
+  index: -1
+dis_cherry
+  rotate: false
+  xy: 3, 311
+  size: 203, 219
+  orig: 219, 225
+  offset: 8, 4
+  index: -1
+glow_red
+  rotate: false
+  xy: 3, 99
+  size: 203, 209
+  orig: 219, 225
+  offset: 8, 8
+  index: -1
+particle
+  rotate: false
+  xy: 3, 45
+  size: 51, 51
+  orig: 57, 57
+  offset: 3, 3
+  index: -1
+particle (426)
+  rotate: false
+  xy: 209, 44
+  size: 135, 139
+  orig: 148, 148
+  offset: 6, 5
+  index: -1

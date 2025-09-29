@@ -1,0 +1,62 @@
+
+grape.png
+size: 728,728
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_grapes
+  rotate: true
+  xy: 473, 322
+  size: 249, 252
+  orig: 265, 270
+  offset: 7, 9
+  index: -1
+glow_violet
+  rotate: true
+  xy: 230, 339
+  size: 232, 240
+  orig: 250, 258
+  offset: 9, 9
+  index: -1
+grape
+  rotate: true
+  xy: 3, 397
+  size: 190, 224
+  orig: 194, 228
+  offset: 2, 2
+  index: -1
+grape_01
+  rotate: false
+  xy: 336, 574
+  size: 188, 151
+  orig: 192, 160
+  offset: 2, 7
+  index: -1
+grape_02
+  rotate: false
+  xy: 527, 574
+  size: 187, 151
+  orig: 192, 187
+  offset: 2, 30
+  index: -1
+grape_03
+  rotate: false
+  xy: 57, 602
+  size: 134, 123
+  orig: 140, 127
+  offset: 2, 2
+  index: -1
+particle
+  rotate: false
+  xy: 3, 674
+  size: 51, 51
+  orig: 57, 57
+  offset: 3, 3
+  index: -1
+particle (426)
+  rotate: true
+  xy: 194, 590
+  size: 135, 139
+  orig: 148, 148
+  offset: 6, 5
+  index: -1

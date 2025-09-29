@@ -1,0 +1,41 @@
+
+sym_k.png
+size: 373,373
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_k
+  rotate: false
+  xy: 3, 202
+  size: 195, 168
+  orig: 199, 172
+  offset: 2, 2
+  index: -1
+s_k_01
+  rotate: false
+  xy: 128, 86
+  size: 180, 86
+  orig: 184, 113
+  offset: 2, 25
+  index: -1
+s_k_02
+  rotate: true
+  xy: 3, 7
+  size: 192, 122
+  orig: 197, 155
+  offset: 2, 8
+  index: -1
+s_k_03
+  rotate: false
+  xy: 128, 3
+  size: 143, 80
+  orig: 158, 89
+  offset: 11, 2
+  index: -1
+sym_k
+  rotate: true
+  xy: 201, 175
+  size: 195, 168
+  orig: 199, 172
+  offset: 2, 2
+  index: -1

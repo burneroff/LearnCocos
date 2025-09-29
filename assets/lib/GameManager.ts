@@ -4,24 +4,31 @@ import {
   instantiate,
   Node,
   Prefab,
-  Sprite,
-  Color,
-  Label,
   EditBox,
+  sp,
 } from "cc";
+import { Spin } from "./Spin";
+
 const { ccclass, property } = _decorator;
 
 interface Field {
-  color: string;
+  color?: string;
   x: number;
   y: number;
-  node?: Node; 
+  node?: Node;
+  prefab?: Prefab;
 }
 
-@ccclass("GameMenager")
-export class GameMenager extends Component {
-  @property(Prefab)
-  curPrefab: Prefab = null!;
+enum GameState {
+  GS_INIT,
+  GS_PLAYING,
+  GS_END,
+}
+
+@ccclass("GameManager")
+export class GameManager extends Component {
+  @property([Prefab])
+  prefabs: Prefab[] = [];
 
   @property(EditBox)
   inputM: EditBox = null!;
@@ -34,11 +41,32 @@ export class GameMenager extends Component {
 
   @property(EditBox)
   inputY: EditBox = null!;
+  // DFS обход
+  private dfs(i: number, j: number, prefab: Prefab, cluster: Field[]) {
+    if (
+      i < 0 ||
+      j < 0 ||
+      i >= this.fieldWidthM ||
+      j >= this.fieldLengthN ||
+      this._visited[i][j] ||
+      this._field[i][j].prefab !== prefab
+    ) {
+      return;
+    }
 
-  private fieldWidthM = 5;
-  private fieldLengthN = 5;
-  private fieldColorsX = 0;
-  private fieldMinClasterSizeY = 0;
+    this._visited[i][j] = true;
+    cluster.push(this._field[i][j]);
+
+    this.dfs(i + 1, j, prefab, cluster);
+    this.dfs(i - 1, j, prefab, cluster);
+    this.dfs(i, j + 1, prefab, cluster);
+    this.dfs(i, j - 1, prefab, cluster);
+  }
+
+  private fieldWidthM = 5; // ширина (строки)
+  private fieldLengthN = 5; // длина (столбцы)
+  private fieldColorsX = 3; // количество цветов
+  private fieldMinClusterSizeY = 3; // минимальный размер кластера
 
   private _field: Field[][] = [];
   private _visited: boolean[][] = [];
@@ -54,27 +82,22 @@ export class GameMenager extends Component {
     "#FFFFFF",
   ];
 
-  // DFS обход
-  private dfs(i: number, j: number, color: string, cluster: Field[]) {
-    if (
-      i < 0 ||
-      j < 0 ||
-      i >= this.fieldWidthM ||
-      j >= this.fieldLengthN ||
-      this._visited[i][j] ||
-      this._field[i][j].color !== color
-    ) {
-      return;
+  @property(Spin)
+  spin: Spin = null!;
+
+  @property(Node)
+  startMenu: Node = null!;
+
+  private _curstate: GameState = GameState.GS_INIT;
+  set curState(value) {
+    switch (value) {
+      case GameState.GS_PLAYING:
+        this.startMenu.active = false;
+      case GameState.GS_END:
+        break;
+      default:
+        this.generateField();
     }
-
-    this._visited[i][j] = true;
-    cluster.push(this._field[i][j]);
-
-    // рекурсивно в 4 стороны
-    this.dfs(i + 1, j, color, cluster);
-    this.dfs(i - 1, j, color, cluster);
-    this.dfs(i, j + 1, color, cluster);
-    this.dfs(i, j - 1, color, cluster);
   }
 
   generateField() {
@@ -83,10 +106,16 @@ export class GameMenager extends Component {
     for (let i = 0; i < this.fieldWidthM; i++) {
       let row: Field[] = [];
       for (let j = 0; j < this.fieldLengthN; j++) {
+        const prefab =
+          this.prefabs[Math.floor(Math.random() * this.fieldColorsX)];
+        const color =
+          this._colorArr[Math.floor(Math.random() * this.fieldColorsX)];
+
         row.push({
-          color: this._colorArr[Math.floor(Math.random() * this.fieldColorsX)],
-          x: 50 * j,
-          y: 50 * i,
+          prefab,
+          color,
+          x: 125 * j,
+          y: 125 * i,
         });
       }
       this._field.push(row);
@@ -96,24 +125,26 @@ export class GameMenager extends Component {
   }
 
   spawnField() {
-    if (!this.curPrefab) {
-      console.warn("Prefab is not assigned!");
+    if (!this.prefabs || this.prefabs.length === 0) {
+      console.warn("Prefabs are not assigned!");
       return;
     }
 
     for (let i = 0; i < this.fieldWidthM; i++) {
       for (let j = 0; j < this.fieldLengthN; j++) {
-        let block = instantiate(this.curPrefab);
+        const block = instantiate(this._field[i][j].prefab!);
         this.node.addChild(block);
         block.setPosition(this._field[i][j].x, this._field[i][j].y);
 
-        // Запоминаем узел внутри field
+        // сохраняем ссылку
         this._field[i][j].node = block;
 
-        // Задаём цвет спрайта
-        let sprite = block.getComponentInChildren(Sprite);
-        if (sprite) {
-          sprite.color = Color.fromHEX(new Color(), this._field[i][j].color);
+        // красим спрайт, если есть
+        const skeleton = block.getComponentInChildren(
+          "sp.Skeleton"
+        ) as sp.Skeleton;
+        if (skeleton) {
+          skeleton.setAnimation(0, "in", false);
         }
       }
     }
@@ -130,14 +161,21 @@ export class GameMenager extends Component {
       for (let j = 0; j < this.fieldLengthN; j++) {
         if (!this._visited[i][j]) {
           let cluster: Field[] = [];
-          this.dfs(i, j, this._field[i][j].color, cluster);
+          this.dfs(i, j, this._field[i][j].prefab!, cluster);
 
-          // если кластер достаточно большой — включаем Label у всех блоков
-          if (cluster.length >= this.fieldMinClasterSizeY) {
+          if (cluster.length >= this.fieldMinClusterSizeY) {
             for (let cell of cluster) {
-              let label = cell.node?.getComponentInChildren(Label);
-              if (label) {
-                label.enabled = true;
+              const skeleton = cell.node?.getComponentInChildren(
+                "sp.Skeleton"
+              ) as sp.Skeleton;
+
+              if (skeleton) {
+                skeleton.setAnimation(0, "win", false);
+
+                // возвращаем idle после win
+                skeleton.setCompleteListener(() => {
+                  skeleton.setAnimation(0, "idle", true);
+                });
               }
             }
           }
@@ -150,8 +188,8 @@ export class GameMenager extends Component {
     this.fieldWidthM = parseInt(this.inputM.string) || this.fieldWidthM;
     this.fieldLengthN = parseInt(this.inputN.string) || this.fieldLengthN;
     this.fieldColorsX = parseInt(this.inputX.string) || this.fieldColorsX;
-    this.fieldMinClasterSizeY =
-      parseInt(this.inputY.string) || this.fieldMinClasterSizeY;
+    this.fieldMinClusterSizeY =
+      parseInt(this.inputY.string) || this.fieldMinClusterSizeY;
   }
 
   onStartButtonClicked() {
@@ -162,7 +200,4 @@ export class GameMenager extends Component {
     this.spawnField();
     this.findClusters();
   }
-
-  start() {}
-  update(deltaTime: number) {}
 }

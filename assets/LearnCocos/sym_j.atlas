@@ -1,0 +1,41 @@
+
+sym_j.png
+size: 642,642
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_j
+  rotate: false
+  xy: 3, 465
+  size: 145, 174
+  orig: 149, 178
+  offset: 2, 2
+  index: -1
+s_j_01
+  rotate: true
+  xy: 3, 140
+  size: 145, 71
+  orig: 149, 81
+  offset: 2, 8
+  index: -1
+s_j_02
+  rotate: true
+  xy: 3, 3
+  size: 134, 98
+  orig: 146, 126
+  offset: 2, 13
+  index: -1
+s_j_03
+  rotate: true
+  xy: 77, 160
+  size: 125, 69
+  orig: 129, 85
+  offset: 2, 2
+  index: -1
+sym_j
+  rotate: false
+  xy: 3, 288
+  size: 145, 174
+  orig: 149, 178
+  offset: 2, 2
+  index: -1

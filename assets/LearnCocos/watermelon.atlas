@@ -1,0 +1,62 @@
+
+watermelon.png
+size: 563,563
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_watermelon
+  rotate: false
+  xy: 3, 77
+  size: 232, 240
+  orig: 247, 254
+  offset: 8, 7
+  index: -1
+glow_green
+  rotate: false
+  xy: 3, 320
+  size: 233, 240
+  orig: 247, 254
+  offset: 7, 7
+  index: -1
+mel_01
+  rotate: false
+  xy: 238, 141
+  size: 186, 88
+  orig: 204, 104
+  offset: 4, 14
+  index: -1
+mel_02
+  rotate: false
+  xy: 239, 232
+  size: 209, 111
+  orig: 213, 131
+  offset: 2, 7
+  index: -1
+mel_03
+  rotate: true
+  xy: 451, 355
+  size: 205, 82
+  orig: 212, 91
+  offset: 3, 2
+  index: -1
+melon
+  rotate: false
+  xy: 239, 346
+  size: 209, 214
+  orig: 213, 218
+  offset: 2, 2
+  index: -1
+particle
+  rotate: false
+  xy: 451, 301
+  size: 51, 51
+  orig: 57, 57
+  offset: 3, 3
+  index: -1
+particle (426)
+  rotate: true
+  xy: 238, 3
+  size: 135, 139
+  orig: 148, 148
+  offset: 6, 5
+  index: -1

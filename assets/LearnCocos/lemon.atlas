@@ -1,0 +1,62 @@
+
+lemon.png
+size: 545,545
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dis_lemon
+  rotate: true
+  xy: 239, 3
+  size: 226, 233
+  orig: 243, 250
+  offset: 9, 9
+  index: -1
+glow_orange
+  rotate: true
+  xy: 3, 6
+  size: 223, 233
+  orig: 241, 249
+  offset: 9, 8
+  index: -1
+leaf
+  rotate: true
+  xy: 161, 232
+  size: 167, 208
+  orig: 171, 212
+  offset: 2, 2
+  index: -1
+lem_01
+  rotate: true
+  xy: 3, 259
+  size: 149, 155
+  orig: 153, 165
+  offset: 2, 8
+  index: -1
+lem_02
+  rotate: false
+  xy: 350, 402
+  size: 161, 140
+  orig: 168, 154
+  offset: 5, 8
+  index: -1
+lem_03
+  rotate: false
+  xy: 57, 411
+  size: 148, 131
+  orig: 156, 139
+  offset: 2, 2
+  index: -1
+particle
+  rotate: false
+  xy: 3, 491
+  size: 51, 51
+  orig: 57, 57
+  offset: 3, 3
+  index: -1
+particle (426)
+  rotate: true
+  xy: 208, 407
+  size: 135, 139
+  orig: 148, 148
+  offset: 6, 5
+  index: -1
