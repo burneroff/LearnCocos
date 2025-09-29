@@ -1,36 +1,60 @@
-import {
-  _decorator,
-  Component,
-  instantiate,
-  Node,
-  Prefab,
-  EditBox,
-  sp,
-} from "cc";
+import { _decorator, Component, instantiate, Node, Prefab } from "cc";
 import { Spin } from "./Spin";
+import { Field, GameState } from "../types";
 
 const { ccclass, property } = _decorator;
-
-interface Field {
-  color?: string;
-  x: number;
-  y: number;
-  node?: Node;
-  prefab?: Prefab;
-}
-
-enum GameState {
-  GS_INIT,
-  GS_PLAYING,
-  GS_END,
-}
 
 @ccclass("GameManager")
 export class GameManager extends Component {
   @property([Prefab])
   prefabs: Prefab[] = [];
 
-  // DFS обход
+  @property(Spin)
+  spin: Spin = null!;
+
+  @property(Node)
+  startMenu: Node = null!;
+
+  set state(value: GameState) {
+    switch (value) {
+      case GameState.GS_PLAYING:
+        this.makeSpin();
+        break;
+      case GameState.GS_END:
+        this.stopGame();
+        this.spin.off();
+        break;
+      default:
+        this.spin.on();
+        this.initGame();
+    }
+  }
+
+  private fieldWidthM = 0; // ширина (строки)
+  set M(value: number) {
+    this.fieldWidthM = value;
+  }
+
+  private fieldLengthN = 0; // длина (столбцы)
+  set N(value: number) {
+    this.fieldLengthN = value;
+  }
+
+  private fieldColorsX = 0; // количество цветов
+  set X(value: number) {
+    this.fieldColorsX = value;
+  }
+
+  private fieldMinClusterSizeY = 0; // минимальный размер кластера
+  set Y(value: number) {
+    this.fieldMinClusterSizeY = value;
+  }
+
+  private _field: Field[][] = [];
+  get field() {
+    return this._field;
+  }
+  private _visited: boolean[][] = [];
   private dfs(i: number, j: number, prefab: Prefab, cluster: Field[]) {
     if (
       i < 0 ||
@@ -52,64 +76,7 @@ export class GameManager extends Component {
     this.dfs(i, j - 1, prefab, cluster);
   }
 
-  private fieldWidthM = 5; // ширина (строки)
-  private fieldLengthN = 5; // длина (столбцы)
-  private fieldColorsX = 3; // количество цветов
-  private fieldMinClusterSizeY = 3; // минимальный размер кластера
-
-  public setM(value: number) {
-    this.fieldWidthM = value;
-  }
-
-  public setN(value: number) {
-    this.fieldLengthN = value;
-  }
-
-  public setX(value: number) {
-    this.fieldColorsX = value;
-  }
-
-  public setY(value: number) {
-    this.fieldMinClusterSizeY = value;
-  }
-
-  private _field: Field[][] = [];
-  private _visited: boolean[][] = [];
-  private _colorArr = [
-    "#FF0000",
-    "#00FF00",
-    "#0000FF",
-    "#FFFF00",
-    "#00FFFF",
-    "#FF00FF",
-    "#FFA500",
-    "#800080",
-    "#FFFFFF",
-  ];
-
-  @property(Spin)
-  spin: Spin = null!;
-
-  @property(Node)
-  startMenu: Node = null!;
-
-  private _curstate: GameState = GameState.GS_INIT;
-  set curState(value) {
-    switch (value) {
-      case GameState.GS_PLAYING:
-        this.startMenu.active = false;
-      case GameState.GS_END:
-        break;
-      default:
-        this.generateField();
-        this.spawnField();
-    }
-  }
-
-  start(){
-    this.curState = GameState.GS_INIT;
-    
-  }
+  start() {}
 
   generateField() {
     this._field = [];
@@ -119,12 +86,8 @@ export class GameManager extends Component {
       for (let j = 0; j < this.fieldLengthN; j++) {
         const prefab =
           this.prefabs[Math.floor(Math.random() * this.fieldColorsX)];
-        const color =
-          this._colorArr[Math.floor(Math.random() * this.fieldColorsX)];
-
         row.push({
           prefab,
-          color,
           x: 125 * j,
           y: 125 * i,
         });
@@ -150,13 +113,8 @@ export class GameManager extends Component {
         // сохраняем ссылку
         this._field[i][j].node = block;
 
-        // красим спрайт, если есть
-        const skeleton = block.getComponentInChildren(
-          "sp.Skeleton"
-        ) as sp.Skeleton;
-        if (skeleton) {
-          skeleton.setAnimation(0, "in", false);
-        }
+        this.spin.playAnimation(block, "in");
+        this.spin.playAnimation(block, "IN");
       }
     }
 
@@ -176,18 +134,8 @@ export class GameManager extends Component {
 
           if (cluster.length >= this.fieldMinClusterSizeY) {
             for (let cell of cluster) {
-              const skeleton = cell.node?.getComponentInChildren(
-                "sp.Skeleton"
-              ) as sp.Skeleton;
-
-              if (skeleton) {
-                skeleton.setAnimation(0, "win", false);
-
-                // возвращаем idle после win
-                skeleton.setCompleteListener(() => {
-                  skeleton.setAnimation(0, "idle", true);
-                });
-              }
+              this.spin.playAnimation(cell.node, "win");
+              this.spin.playAnimation(cell.node, "WIN");
             }
           }
         }
@@ -195,13 +143,23 @@ export class GameManager extends Component {
     }
   }
 
-  gameStart() {
-    this.curState = GameState.GS_PLAYING;
+  initGame() {
+    this.startMenu.active = false;
+    this.generateField();
+    this.spawnField();
+  }
+
+  makeSpin() {
     this.node.removeAllChildren();
     this._field = [];
-
     this.generateField();
     this.spawnField();
     this.findClusters();
+  }
+
+  stopGame() {
+    this.node.removeAllChildren();
+    this._field = [];
+    this.startMenu.active = true;
   }
 }

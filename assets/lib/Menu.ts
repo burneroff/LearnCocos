@@ -1,12 +1,10 @@
-import { _decorator, Component, EditBox, Node } from "cc";
+import { _decorator, Component, EditBox } from "cc";
 import { GameManager } from "./GameManager";
+import { GameState } from "../types";
 const { ccclass, property } = _decorator;
 
 @ccclass("Menu")
 export class Menu extends Component {
-  @property(Node)
-  startMenu: Node = null!; //нужен если сразу конекчу к меню?
-
   @property(EditBox)
   inputM: EditBox = null!;
 
@@ -27,25 +25,22 @@ export class Menu extends Component {
 
     switch (customEventData) {
       case "M":
-        this.gameManager.setM(value);
+        this.gameManager.M = value;
         break;
       case "N":
-        this.gameManager.setN(value);
+        this.gameManager.N = value;
         break;
       case "X":
-        this.gameManager.setX(value);
+        this.gameManager.X = value;
         break;
       case "Y":
-        this.gameManager.setY(value);
+        this.gameManager.Y = value;
         break;
     }
-
-    console.log(`Изменено поле ${customEventData}: ${value}`);
   }
 
   onStartButtonClicked(){
-    this.gameManager.gameStart()
-    this.startMenu.active = false;
+    this.gameManager.state = GameState.GS_INIT;
   }
 
   start() {}
